@@ -20,7 +20,7 @@ main()
     });
 
 async function main(){
-    await mongoose.connect(MONGO_URL);
+    await mongoose.connect(MONGO_URL); 
 }
 
 app.set("view engine", "ejs");
@@ -94,7 +94,8 @@ app.all("*",(req,res,next)=>{
 
 app.use((err,req,res,next)=>{
     let {statusCode=500, message="Something went wrong!"} = err;
-    res.status(statusCode).send(message);
+    res.status(statusCode).render("error.ejs",{message});
+    
 });
 
 app.listen(8080, () => {
