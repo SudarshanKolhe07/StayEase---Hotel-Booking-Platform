@@ -9,6 +9,7 @@ const wrapAsync = require("./utils/wrapAsync.js");
 const ExpressError = require("./utils/ExpressError.js");
 const {listingSchema} = require("./schema.js");
 const { error } = require("console");
+const Review = require("./models/reviews.js");
 
 const MONGO_URL = "mongodb://127.0.0.1:27017/wander";
 
@@ -92,6 +93,19 @@ app.delete("/listings/:id", wrapAsync(async(req,res)=>{
     console.log(deleteListing);
     res.redirect("/listings");
 }));
+
+//Review Post route
+app.post("/listings/:id/reviews",async(req,res)=>{
+    let listing = await Listing.findById(req.params.id);
+    let newReview=new Review(req.body.review);
+
+    listing.reviews.push(newReview);
+    await newReview.save();
+    await listing.save();
+
+    res.redirect(`/listings/${listing._id}`);
+});
+
 
 app.all("*",(req,res,next)=>{
     next(new ExpressError(404,"page not found!"));
