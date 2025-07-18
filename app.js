@@ -13,9 +13,9 @@ const User = require("./models/user.js");
 
 const session = require("express-session");
 
-const listings = require("./routes/listing.js");
-const reviews = require("./routes/reviews.js");
-// const user = require("./models/user.js");
+const listingRouter = require("./routes/listing.js");
+const reviewRouter = require("./routes/reviews.js");
+const userRouter = require("./routes/user.js");
 
 const MONGO_URL = "mongodb://127.0.0.1:27017/wander";
 
@@ -80,8 +80,9 @@ app.get("/demouser", async(req,res)=>{
     res.send(newUser);
 })
 
-app.use("/listings", listings);
-app.use("/listings/:id/reviews", reviews);
+app.use("/listings", listingRouter);
+app.use("/listings/:id/reviews", reviewRouter);
+app.use("/", userRouter);
 
 
 app.all("*",(req,res,next)=>{
