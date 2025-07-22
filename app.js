@@ -90,10 +90,9 @@ app.all("*",(req,res,next)=>{
     next(new ExpressError(404,"page not found!"));
 });
 
-app.use((err,req,res)=>{
-    let {statusCode=500, message="Something went wrong!"} = err;
-    res.status(statusCode).render("error.ejs",{message});
-    
+app.use((err, req, res, next) => {
+    let {statusCode = 500, message = "Something went wrong!"} = err;
+    res.status(statusCode).render("error.ejs", { message });
 });
 
 app.listen(8080, () => {

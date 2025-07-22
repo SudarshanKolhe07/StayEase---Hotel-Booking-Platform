@@ -27,6 +27,7 @@
         
     </div>
         <div class="col-8 offset-3">
+        <%if(currUser){%>
         <hr>
         <form action="/listings/<%= listing.id %>/reviews" method="POST" novalidate class="needs-validation">
         <h4>Leave a Review</h4>
@@ -42,6 +43,7 @@
         <div class="mb-3">
             <button type="submit" class="btn btn-outline-dark">Submit</button>
         </div>
+        <%}%>
         </form>
 
         <hr>
@@ -51,7 +53,7 @@
             <% for(review of listing.reviews) { %>
             <div class="card col-5 mb-3 ms-3">
                 <div class="card-body">
-                    <h5 class="card-title">Sudarshan Kolhe</h5>
+                    <h5 class="card-title">@<%= review.author.username%></h5>
                     <p class="card-text"><%=review.comment%></p>
                     <p class="card-text"><%=review.rating%> Stars</p>
                 </div>
