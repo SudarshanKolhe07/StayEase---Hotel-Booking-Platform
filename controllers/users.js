@@ -1,5 +1,6 @@
 const User = require("../models/user");
 
+
 module.exports.createSignUp=(req,res)=>{
     res.render("users/signup.ejs");
 };
@@ -35,8 +36,6 @@ module.exports.login = (req, res) => {
     let redirectUrl = res.locals.redirectUrl || "/listings";
     res.redirect(redirectUrl);
 };
-
-
 
 module.exports.logout=(req,res,next)=>{
     req.logout((err)=>{
