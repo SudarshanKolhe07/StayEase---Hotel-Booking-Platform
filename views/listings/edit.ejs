@@ -3,7 +3,7 @@
     <div class="row mt-3">
         <div class="col-8 offset-2">
     <h3>Edit Listing</h3>
-    <form method="post" action="/listings/<%=listing._id%>?_method=PUT" novalidate class="needs-validation">
+    <form method="post" action="/listings/<%=listing._id%>?_method=PUT" novalidate enctype="multipart/form-data" class="needs-validation">
         <div class="mb-3">
             <label for="title" class="form-label">Title</label>
             <input name="listing[title]" value="<%= listing.title %>" type="text" class="form-control" required>
@@ -12,15 +12,18 @@
             <label for="description" class="form-label">Description</label>
             <textarea name="listing[description]" id="" class="form-control" required><%= listing.description %></textarea>
         </div>
+
         <div class="mb-3">
-            <label for="image" class="form-label">Image Url</label>
-            <input name="listing[image][url]" class="form-control" type="text" placeholder="Enter image URL" >
+            Original Listing Image <br>
+            <img src="<%= originalImageUrl %>" class="img-thumbnail" style="max-width: 200px;" />
+        </div>
 
-
-            <div class="invalid-feedback">URL must be valid</div>
+        <div class="mb-3">
+            <label for="image" class="form-label">Upload New Image</label>
+            <input name="listing[image]" class="form-control" type="file">
         </div>
          <div class="row">
-            <div class="mb-3 col-md-4">
+            <div class="mb-3 col-md-4"> 
             <label for="price" class="form-label">Price</label>
             <input name="listing[price]" value="<%= listing.price %>" type="number" class="form-control" required> 
             <div class="invalid-feedback">enter valid price</div>
