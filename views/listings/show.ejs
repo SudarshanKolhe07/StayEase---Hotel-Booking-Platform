@@ -60,8 +60,9 @@
 
         <hr>
 
-        <p><b>All Reviews</b></p>
+        <% if(listing.reviews.length > 0) { %>
         <div class="row ">
+            <p><b>All Reviews</b></p>
             <% for(review of listing.reviews) { %>
             <div class="card col-5 mb-3 ms-3">
                 <div class="card-body">
@@ -76,5 +77,26 @@
             </div>
             <%}%>
         </div>
+        <%}%>
+
+        <!-- Map -->
+        <div class="col-6 offset-3 mb-3">
+        <h3>Where you'll be</h3>
+        <div id="map"></div>
+        </div>
+
     </div>
 </body>
+
+<script>
+    let mapToken = "<%= mapToken %>";
+    console.log(mapToken);
+    mapboxgl.accessToken= mapToken;
+    const map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v9',
+        projection: 'globe', // Display the map as a globe, since satellite-v9 defaults to Mercator
+        zoom: 1,
+        center: [30, 15]
+    });
+ 

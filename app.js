@@ -41,6 +41,11 @@ app.use(express.urlencoded({extended:true}));
 app.use(methodOverride("_method"));
 app.engine('ejs',ejsMate);
 app.use(express.static(path.join(__dirname,"/public")));
+app.use((req, res, next) => {
+    res.locals.mapToken = process.env.MAP_TOKEN;
+    next();
+});
+
 
 const sessionOptions ={
     secret : "mysupersecretcode",
