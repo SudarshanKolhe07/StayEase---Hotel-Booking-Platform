@@ -1,4 +1,7 @@
 <% layout("layouts/boilerplate") %>
+<script>
+    const mapToken = "<%= process.env.MAP_TOKEN %>";
+</script>
 <body>
     <div class="row mt-3">
     <div class="col-8 offset-3">
@@ -78,25 +81,12 @@
             <%}%>
         </div>
         <%}%>
-
-        <!-- Map -->
+    </div>
+     <!-- Map -->
         <div class="col-6 offset-3 mb-3">
         <h3>Where you'll be</h3>
         <div id="map"></div>
         </div>
-
-    </div>
 </body>
 
-<script>
-    let mapToken = "<%= mapToken %>";
-    console.log(mapToken);
-    mapboxgl.accessToken= mapToken;
-    const map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/mapbox/streets-v9',
-        projection: 'globe', // Display the map as a globe, since satellite-v9 defaults to Mercator
-        zoom: 1,
-        center: [30, 15]
-    });
- 
+<script src="/js/map.js"></script>
