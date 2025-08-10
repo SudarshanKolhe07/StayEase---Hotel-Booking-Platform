@@ -1,9 +1,21 @@
 
-    mapboxgl.accessToken= mapToken;
-    const map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/mapbox/streets-v9',
-        projection: 'globe', // Display the map as a globe, since satellite-v9 defaults to Mercator
-        zoom: 9,
-        center: [77.209, 28.6139]
-    });
+mapboxgl.accessToken= mapToken;
+const map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v9',
+    projection: 'globe', // Display the map as a globe, since satellite-v9 defaults to Mercator
+    zoom: 9,
+    center: listing.geometry.coordinates,
+});
+
+// console.log(coordinates);
+
+const marker = new mapboxgl.Marker({ color: "red" })
+  .setLngLat(listing.geometry.coordinates)
+  .setPopup(
+    new mapboxgl.Popup({ offset: 25 }).setHTML(
+      `<h5>${listing.title}</h5><p>Exact location will be provided after booking!</p>`
+    )
+  )
+  .addTo(map);
+

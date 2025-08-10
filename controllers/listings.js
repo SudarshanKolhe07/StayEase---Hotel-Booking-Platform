@@ -33,9 +33,6 @@ module.exports.createListing=async (req, res) => {
     })
     .send();
 
-    console.log(response.body.features[0].geometry);
-    res.send("Done!");
-
     const newListing = new Listing(req.body.listing);
     newListing.owner=req.user._id;
     if (req.file) {
@@ -45,7 +42,9 @@ module.exports.createListing=async (req, res) => {
         };
     }
 
-        await newListing.save();
+        newListing.geometry=response.body.features[0].geometry;
+        let saved = await newListing.save();
+        console.log(saved);
         req.flash("success", "New Listing Created!");
         res.redirect("/listings");
 };
