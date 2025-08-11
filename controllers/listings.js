@@ -63,20 +63,42 @@ module.exports.showEditListing=async(req,res)=>{
     res.render("listings/edit.ejs",{listing,originalImageUrl});
 };
 
-module.exports.updateEditListing=async (req, res) => {
+module.exports.updateEditListing = async (req, res) => {
     const { id } = req.params;
-    let listing = await Listing.findByIdAndUpdate(id, req.body.listing, { new: true });
-
-    if(typeof req.file!=="undefined"){
-    let url = req.file.path;      // Cloudinary provides this
-    let filename = req.file.filename;
-    listing.image= {url,filename};
-    await listing.save();
-    }
     
-    req.flash("success", "Listing Upadated!");
+    // Get the listing before updating
+    let listing = await Listing.findById(id);
+
+    // Update the basic fields from form
+    listing.title = req.body.listing.title;
+    listing.price = req.body.listing.price;
+    listing.description = req.body.listing.description;
+    listing.location = req.body.listing.location;
+
+    // If location is changed or missing coordinates, fetch from Mapbox
+    if (req.body.listing.location) {
+        let geoData = await geocodingClient
+            .forwardGeocode({
+                query: req.body.listing.location,
+                limit: 1
+            })
+            .send();
+        listing.geometry = geoData.body.features[0].geometry;
+    }
+
+    // If a new image was uploaded
+    if (typeof req.file !== "undefined") {
+        let url = req.file.path;
+        let filename = req.file.filename;
+        listing.image = { url, filename };
+    }
+
+    await listing.save();
+
+    req.flash("success", "Listing Updated!");
     res.redirect(`/listings/${id}`);
 };
+
 
 module.exports.destroyListing=async(req,res)=>{
     let {id}=req.params;
