@@ -1,4 +1,7 @@
 {
+  "engines":{
+    "node":"v20.12.2"
+  },
   "name": "stayease---hotel-booking-platform",
   "version": "1.0.0",
   "description": "",
