@@ -22,6 +22,7 @@ const MongoStore = require('connect-mongo');
 const listingRouter = require("./routes/listing.js");
 const reviewRouter = require("./routes/reviews.js");
 const userRouter = require("./routes/user.js");
+const helmet = require("helmet");
 
 // const MONGO_URL = "mongodb://127.0.0.1:27017/wander";
 const dbURL = process.env.ATLASDB_URL;
@@ -72,6 +73,47 @@ const sessionOptions ={
 // app.get("/", (req,res) => {
 //     res.send("Hii, I am root");
 // });
+const helmet = require("helmet");
+
+// Force HTTPS (important for Render)
+app.enable("trust proxy");
+app.use((req, res, next) => {
+  if (req.secure) {
+    next();
+  } else {
+    res.redirect(`https://${req.headers.host}${req.url}`);
+  }
+});
+
+// Helmet security middleware
+app.use(
+  helmet({
+    contentSecurityPolicy: false, // disable CSP first if breaking scripts, can be configured later
+  })
+);
+
+// Stronger CSP (optional, but helps)
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: [
+        "'self'",
+        "https://cdn.jsdelivr.net", // example for external scripts
+        "https://api.mapbox.com",
+        "'unsafe-inline'" // only if required for inline JS
+      ],
+      styleSrc: [
+        "'self'",
+        "https://fonts.googleapis.com",
+        "'unsafe-inline'"
+      ],
+      fontSrc: ["'self'", "https://fonts.gstatic.com"],
+      imgSrc: ["'self'", "data:", "https://res.cloudinary.com"], // add your Cloudinary
+      connectSrc: ["'self'", "https://api.mapbox.com"],
+    },
+  })
+);
 
 
 app.use(session(sessionOptions));
